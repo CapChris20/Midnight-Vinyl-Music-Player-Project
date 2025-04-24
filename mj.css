@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Orbitron', sans-serif;
+  background: transparent;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Background Video */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* 🔲 Wrapper to center the player */
+.player-wrapper {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+}
+
+/* Canvas */
+#song-canvas {
+  width: 400px;
+  height: 250px;
+  border: 2px solid cyan;
+  box-shadow: 0 0 20px magenta;
+  border-radius: 12px;
+}
+
+.song-name {
+  font-size: 22px;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  width: 100%;
+  color: transparent;
+
+  background: linear-gradient(180deg, #ff85e8 0%, #2de2e6 50%, #ffffff 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  text-shadow:
+    1px 1px 0px #a64ac9,    /* lighter purple */
+    2px 2px 0px #7c2eaa,    /* softer indigo */
+    0 0 12px #2de2e6,
+    0 0 24px #ff85e8;       /* replaced hot pink with neon pink */
+
+  animation: shimmer 4s linear infinite;
+}
+
+
+
+
+/* Progress */
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 1px 1px 2px #000;
+}
+
+#current-time,
+#duration {
+  font-size: 16px;
+  color: cyan;
+}
+
+#progress-bar {
+  -webkit-appearance: none;
+  width: 300px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 0 10px cyan, 0 0 20px magenta;
+  cursor: pointer;
+  border: 2px solid magenta;
+}
+
+#progress-bar::-webkit-slider-runnable-track {
+  height: 10px;
+  background: linear-gradient(90deg, cyan, magenta);
+  border-radius: 10px;
+}
+
+#progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid magenta;
+  margin-top: -4px;
+  box-shadow: 0 0 10px magenta;
+}
+
+#progress-bar::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid magenta;
+  box-shadow: 0 0 10px magenta;
+}
+
+/* Player Controls */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row1, .row2 {
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
+}
+button {
+  font-size: 18px; /* normal button size */
+  padding: 10px 15px;
+  border-radius: 50px;
+
+  background: transparent;
+  border: 2px solid #FF6BCF;
+  color: transparent;
+
+  background-image: linear-gradient(180deg, #ff6bcf 0%, #2de2e6 80%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  text-shadow:
+    1px 1px 0px #7c2eaa,   /* softened purple */
+    0 0 10px #2de2e6;
+
+  animation: shimmer 4s linear infinite;
+
+  box-shadow: 0 0 8px #2de2e6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+button i {
+  margin-left: 5px;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+/* Back Button */
+.backtohome {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid #FF6BCF;
+  color: transparent;
+  background-image: linear-gradient(180deg, #b014d9 0%, #FF6BCF 50%, #FF6BCF 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    1px 1px 0px #4b0082,
+    2px 2px 0px #2c003e,
+    0 0 12px #FF6BCF,
+    0 0 24px #B014D9;
+  animation: shimmer 4s linear infinite;
+  box-shadow: 0 0 12px #FF6BCF, 0 0 24px #B014D9;
+  transition: all 0.3s ease;
+}
+
+.backtohome:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px #2DE2E6, 0 0 30px #FF6BCF;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  #song-canvas {
+    width: 90%;
+    height: auto;
+  }
+
+  #progress-bar {
+    width: 80%;
+  }
+
+  .row1, .row2 {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
