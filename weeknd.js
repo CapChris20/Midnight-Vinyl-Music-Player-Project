@@ -207,22 +207,26 @@ document.addEventListener('DOMContentLoaded', () => {
     repeatBtn.classList.toggle('active', audio.loop);
   });
 
+  
   shuffleBtn.addEventListener('click', () => {
-    isShuffle = !isShuffle;
-    shuffleBtn.classList.toggle('active', isShuffle);
+    if (!songsData.length) return;
 
-    if (isShuffle) {
-      shuffledSongs = [...songsData];
-      for (let i = shuffledSongs.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledSongs[i], shuffledSongs[j]] = [shuffledSongs[j], shuffledSongs[i]];
-      }
-    }
+    let nextIndex;
+    let attempts = 0;
 
-    currentIndex = 0;
-    const list = isShuffle ? shuffledSongs : songsData;
-    loadSongFromList(list, currentIndex);
+    do {
+      nextIndex = Math.floor(Math.random() * songsData.length);
+      attempts++;
+    } while (
+      songsData[nextIndex]?.trackName?.toLowerCase().includes("blinding lights") &&
+      songsData[currentIndex]?.trackName?.toLowerCase().includes("blinding lights") &&
+      attempts < 10
+    );
+
+    currentIndex = nextIndex;
+    loadSongFromList(songsData, currentIndex);
   });
+
 
   progressBar.addEventListener('input', e => {
     const time = Number(e.target.value);

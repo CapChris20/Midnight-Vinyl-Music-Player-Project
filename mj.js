@@ -215,8 +215,13 @@ document.addEventListener('DOMContentLoaded', () => {
       repeatBtn.classList.toggle('active', audio.loop);
     });
     if (shuffleBtn) shuffleBtn.addEventListener('click', () => {
-      isShuffle = !isShuffle;
-      shuffleBtn.classList.toggle('active', isShuffle);
+      if (!songsData.length) return;
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * songsData.length);
+      } while (newIndex === currentIndex && songsData.length > 1);
+      currentIndex = newIndex;
+      loadSong(currentIndex);
     });
   
     progressBar.addEventListener('input', e => {
