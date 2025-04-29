@@ -242,3 +242,42 @@ button:hover {
     justify-content: center;
   }
 }
+
+@media (max-width: 768px) {
+  #song-canvas {
+    width: 90%;
+    height: auto;
+  }
+
+  .progress-container {
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  #progress-bar {
+    width: 80%;
+  }
+
+  .row1,
+  .row2 {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card,
+  .player-wrapper,
+  .player {
+    width: 100%;
+    padding: 12px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+
+  .song-name {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+}
