@@ -33,7 +33,7 @@ A stunning, cyberpunk-themed music player featuring three legendary artists: **T
 
 ## 🚀 Live Demo
 
-[View Live Project](https://midnight-vinyl-music-player.web.app/)
+[View Live Project](https://midnight-vinyl-playe.web.app/)
 
 ## 📁 Project Structure
 
@@ -240,3 +240,4 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 **Made with ❤️ and lots of ☕ by Captain Chris**
 
 *Experience the future of music with Midnight Vinyl* 🌙🎵
+
