@@ -11,7 +11,10 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
 
   <div id="bg-media" class="bg-media" aria-hidden="true">
-    <video id="bg-video" preload="none" muted loop playsinline></video>
+    <video id="bg-video" preload="metadata" muted loop playsinline
+      poster="music-home.JPG">
+      <source src="videos/compressed/homebackground.mp4" type="video/mp4" />
+    </video>
     <div class="bg-poster"></div>
   </div>
 
@@ -56,13 +59,6 @@
   </main>
 
   <script src="video-background.js"></script>
-  <script>
-    initVideoBackground({
-      mp4: 'videos/compressed/homebackground.mp4',
-      webm: 'videos/compressed/homebackground.webm',
-      poster: 'music-home.JPG',
-      deferMs: 1500,
-    });
-  </script>
+  <script>initVideoBackground();</script>
 </body>
 </html>

@@ -1,10 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  initVideoBackground({
-    mp4: 'videos/compressed/weekndbg.mp4',
-    webm: 'videos/compressed/weekndbg.webm',
-    poster: 'weekndphoto.PNG',
-  });
-
+  initVideoBackground();
   new MidnightVinylPlayer({
     songsUrl: 'weeknd_merged.json',
     artistName: 'The Weeknd',

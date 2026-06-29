@@ -153,7 +153,7 @@ class MidnightVinylPlayer {
     this._setAlbumArt(song);
     this._updateNowPlayingMeta();
 
-    // Start loading immediately — no artificial delays
+    this.audio.crossOrigin = 'anonymous';
     this.audio.src = song.previewUrl;
     this.audio.load();
 
@@ -166,9 +166,17 @@ class MidnightVinylPlayer {
       this._updateTimeDisplay(0, duration);
     };
 
+    this.audio.onerror = () => {
+      if (this.el.title) this.el.title.textContent = 'Preview unavailable — try next track';
+      this._updatePlayPauseUI(false);
+    };
+
     this.audioPlayer.play()
       .then(() => this._updatePlayPauseUI(true))
-      .catch(() => this._updatePlayPauseUI(false));
+      .catch(() => {
+        this._updatePlayPauseUI(false);
+        if (this.el.meta) this.el.meta.textContent = 'Tap ▶ to play (browser requires a click)';
+      });
   }
 
   async init() {

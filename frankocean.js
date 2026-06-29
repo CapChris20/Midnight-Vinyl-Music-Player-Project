@@ -1,10 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  initVideoBackground({
-    mp4: 'videos/compressed/frankoceanbg.mp4',
-    webm: 'videos/compressed/frankoceanbg.webm',
-    poster: 'frankphoto.PNG',
-  });
-
+  initVideoBackground();
   const banned = ['remix', 'rework', 'edit', 'bootleg', 'cover', 'version'];
   new MidnightVinylPlayer({
     songsUrl: 'frank_ocean.json',

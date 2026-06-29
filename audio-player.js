@@ -9,23 +9,29 @@ class AudioPlayer {
     this.audio.preload = 'metadata';
     this.audio.volume = 0.7;
 
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
-    this.analyser = this.context.createAnalyser();
-    this.analyser.fftSize = 64;
-    this.source = this.context.createMediaElementSource(this.audio);
-    this.source.connect(this.analyser);
-    this.analyser.connect(this.context.destination);
+    this.context = null;
+    this.analyser = null;
+    try {
+      this.context = new (window.AudioContext || window.webkitAudioContext)();
+      this.analyser = this.context.createAnalyser();
+      this.analyser.fftSize = 64;
+      const source = this.context.createMediaElementSource(this.audio);
+      source.connect(this.analyser);
+      this.analyser.connect(this.context.destination);
+    } catch (err) {
+      console.warn('[AudioPlayer] Web Audio unavailable, using plain audio:', err.message);
+    }
 
-    this._onTimeUpdate = null;
     this._rafId = null;
     this._lastProgressTime = -1;
+    this._onTimeUpdate = null;
   }
 
   getAudioData() {
-    const bufferLength = this.analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-    this.analyser.getByteFrequencyData(dataArray);
-    return dataArray;
+    if (!this.analyser) return new Uint8Array(64);
+    const data = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(data);
+    return data;
   }
 
   formatTime(seconds) {
@@ -36,7 +42,7 @@ class AudioPlayer {
   }
 
   async resumeContext() {
-    if (this.context.state === 'suspended') {
+    if (this.context?.state === 'suspended') {
       await this.context.resume();
     }
   }

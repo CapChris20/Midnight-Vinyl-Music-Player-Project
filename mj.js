@@ -1,10 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  initVideoBackground({
-    mp4: 'videos/compressed/mjbg.mp4',
-    webm: 'videos/compressed/mjbg.webm',
-    poster: 'mjphoto.PNG',
-  });
-
+  initVideoBackground();
   new MidnightVinylPlayer({
     songsUrl: 'michael_jackson.json',
     artistName: 'Michael Jackson',
