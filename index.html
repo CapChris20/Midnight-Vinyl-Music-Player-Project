@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight Vinyl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div id="bg-media" class="bg-media home-bg" aria-hidden="true">
+    <video id="bg-video" preload="none" muted loop playsinline></video>
+    <div class="bg-poster"></div>
+    <div class="bg-loading-spinner" aria-hidden="true"></div>
+    <p class="bg-error-msg" role="alert" hidden>Video unavailable</p>
+  </div>
+
+  <main id="main-content">
+    <div class="title">
+      <h1 class="vapor-heading">Midnight Vinyl</h1>
+      <p class="vapor-sub">Home to music from The Weeknd, Frank Ocean, and the legend himself, Michael Jackson.</p>
+    </div>
+
+    <div class="container">
+      <div class="card-wrapper">
+        <article class="card">
+          <img src="weekndphoto.PNG" alt="The Weeknd" class="card-image" loading="lazy" />
+          <a href="weeknd.html" class="card-link">
+            <span class="play">Play The Weeknd</span>
+          </a>
+        </article>
+        <article class="card">
+          <img src="music-home.JPG" alt="Frank Ocean" class="card-image" loading="lazy" />
+          <a href="frankocean.html" class="card-link">
+            <span class="play">Play Frank Ocean</span>
+          </a>
+        </article>
+        <article class="card">
+          <img src="mjphoto.PNG" alt="Michael Jackson" class="card-image" loading="lazy" />
+          <a href="mj.html" class="card-link">
+            <span class="play">Play Michael Jackson</span>
+          </a>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <script src="video-background.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initVideoBackground({
+        mp4: 'videos/compressed/homebackground.mp4',
+        webm: 'videos/compressed/homebackground.webm',
+        poster: 'music-home.JPG',
+      });
+    });
+  </script>
+</body>
+</html>

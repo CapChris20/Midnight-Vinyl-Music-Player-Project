@@ -1,0 +1,39 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "videos/originals/**",
+      "scripts/**",
+      "*.zip",
+      "filelist.txt",
+      "Midnight_Vinyl_Music_Player_README_Clean.pdf",
+      "frankoceanbg.mp4",
+      "weekndbg.mp4",
+      "mjbg.mp4",
+      "homebackground.mov"
+    ],
+    "headers": [
+      {
+        "source": "videos/compressed/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css|json)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      }
+    ]
+  }
+}
