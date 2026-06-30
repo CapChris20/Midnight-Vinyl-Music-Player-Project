@@ -198,7 +198,7 @@ body::after {
 
 @media (max-width: 768px) {
   .vinyl-panel { padding: 24px 20px; border-radius: 24px; }
-  .album-stage { width: 180px; height: 180px; }
+  #song-canvas { width: 100%; }
   .controls-primary .control-btn { width: 52px; height: 52px; }
   .controls-primary .btn-play, .controls-primary .btn-pause { width: 68px; height: 68px; }
 }
