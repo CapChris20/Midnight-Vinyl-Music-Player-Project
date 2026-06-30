@@ -5,19 +5,17 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "videos/originals/**",
+      "videos/**",
       "scripts/**",
       "*.zip",
       "filelist.txt",
       "Midnight_Vinyl_Music_Player_README_Clean.pdf",
-      "frankoceanbg.mp4",
-      "weekndbg.mp4",
-      "mjbg.mp4",
+      "LOVABLE_PROMPT.md",
       "homebackground.mov"
     ],
     "headers": [
       {
-        "source": "videos/compressed/**",
+        "source": "**/*.mp4",
         "headers": [
           {
             "key": "Cache-Control",

@@ -16,25 +16,34 @@ html, body {
 }
 .skip-link:focus { top: 16px; }
 
-.bg-media { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
-.bg-media::after {
-  content: ''; position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(180deg, rgba(3,2,8,0.4) 0%, rgba(3,2,8,0.9) 100%);
+#bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
-#bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-.bg-poster {
-  position: absolute; inset: 0; z-index: 0;
-  background-size: cover; background-position: center;
-  filter: blur(3px) brightness(0.45); transform: scale(1.06);
-  transition: opacity 0.6s ease;
+
+#bg-video::after,
+body::before {
+  content: none;
 }
-/* Hide static poster once video is playing — it was covering the video */
-.bg-media.is-video-playing .bg-poster { opacity: 0; pointer-events: none; }
-.bg-loading-spinner { display: none; }
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(3,2,8,0.35) 0%, rgba(3,2,8,0.85) 100%);
+}
 
 #main-content {
-  position: relative; z-index: 2;
-  max-width: 1100px; margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 48px 24px 80px;
 }
 
@@ -72,46 +81,33 @@ html, body {
   position: relative; border-radius: 20px; overflow: hidden;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-  transition: transform 280ms ease, box-shadow 280ms ease, border-color 280ms ease;
+  transition: transform 280ms ease, box-shadow 280ms ease;
   text-decoration: none; color: inherit; display: block;
 }
 .artist-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(255,255,255,0.18);
   box-shadow: 0 24px 60px rgba(0,0,0,0.5);
 }
-.artist-card--weeknd:hover { box-shadow: 0 24px 60px rgba(225,29,72,0.25); }
-.artist-card--frank:hover { box-shadow: 0 24px 60px rgba(249,115,22,0.25); }
-.artist-card--mj:hover { box-shadow: 0 24px 60px rgba(234,179,8,0.2); }
 
 .artist-card__img-wrap { aspect-ratio: 4/5; overflow: hidden; }
-.artist-card__img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 400ms ease;
-}
-.artist-card:hover .artist-card__img { transform: scale(1.05); }
+.artist-card__img { width: 100%; height: 100%; object-fit: cover; }
 
 .artist-card__body {
   padding: 20px;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6));
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7));
   position: absolute; bottom: 0; left: 0; right: 0;
 }
 
 .artist-card__name {
   font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 800;
 }
+
 .artist-card__cta {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 8px; font-size: 0.8rem; font-weight: 600;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: rgba(244,240,255,0.6);
+  display: inline-block; margin-top: 8px; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase; color: #2de2e6;
 }
-.artist-card:hover .artist-card__cta { color: #fff; }
-.artist-card--weeknd .artist-card__cta { color: #fb7185; }
-.artist-card--frank .artist-card__cta { color: #fb923c; }
-.artist-card--mj .artist-card__cta { color: #facc15; }
 
 @media (max-width: 768px) {
-  #bg-video { display: none !important; }
-  .bg-poster { filter: blur(12px) brightness(0.3); }
+  #bg-video { display: none; }
+  body { background: linear-gradient(135deg, #0f0a1a, #1a0a12, #0a1020); }
 }

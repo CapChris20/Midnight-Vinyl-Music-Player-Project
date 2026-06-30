@@ -153,7 +153,6 @@ class MidnightVinylPlayer {
     this._setAlbumArt(song);
     this._updateNowPlayingMeta();
 
-    this.audio.crossOrigin = 'anonymous';
     this.audio.src = song.previewUrl;
     this.audio.load();
 

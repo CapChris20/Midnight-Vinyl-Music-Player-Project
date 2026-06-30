@@ -2,19 +2,13 @@
 *.zip
 *.mov
 *.log
-videos/originals/
+videos/
 
-# Large uncompressed videos at project root
-/frankoceanbg.mp4
-/weekndbg.mp4
-/mjbg.mp4
-/homebackground.mov
-
-# Allow compressed deployment assets
 *.mp4
-!videos/compressed/*.mp4
-*.webm
-!videos/compressed/*.webm
+!homebackground.mp4
+!weekndbg.mp4
+!frankoceanbg.mp4
+!mjbg.mp4
 
 *.jpg
-!music-home.JPG
+*.JPG

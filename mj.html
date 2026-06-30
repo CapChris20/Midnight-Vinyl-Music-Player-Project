@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Michael Jackson — Midnight Vinyl</title>
-  <link rel="preconnect" href="https://audio-ssl.itunes.apple.com" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="player.css" />
 </head>
@@ -13,15 +12,9 @@
   <a class="skip-link" href="#player-main">Skip to player</a>
   <a class="backtohome" href="index.html">← Home</a>
 
-  <div id="bg-media" class="bg-media" aria-hidden="true">
-    <video id="bg-video" preload="metadata" muted loop playsinline
-      poster="mjphoto.PNG">
-      <source src="videos/compressed/mjbg.mp4" type="video/mp4" />
-    </video>
-    <div class="bg-poster"></div>
-    <div class="bg-loading-spinner" aria-hidden="true"></div>
-    <p class="bg-error-msg" role="alert" hidden>Video unavailable</p>
-  </div>
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="mjbg.mp4" type="video/mp4" />
+  </video>
 
   <main id="player-main" class="player-wrapper" aria-label="Michael Jackson music player">
     <div class="vinyl-panel">
@@ -57,8 +50,8 @@
           <button type="button" class="control-btn btn-forward" aria-label="Next"><i class="fa-solid fa-forward"></i></button>
         </div>
         <div class="controls-row controls-secondary">
-          <button type="button" class="control-btn btn-shuffle" aria-label="Shuffle" aria-pressed="false"><i class="fa-solid fa-shuffle"></i></button>
-          <button type="button" class="control-btn btn-repeat" data-mode="off" aria-label="Repeat" aria-pressed="false"><i class="fa-solid fa-repeat"></i></button>
+          <button type="button" class="control-btn btn-shuffle" aria-label="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+          <button type="button" class="control-btn btn-repeat" data-mode="off" aria-label="Repeat"><i class="fa-solid fa-repeat"></i></button>
           <button type="button" class="control-btn btn-vol-down" aria-label="Volume down"><i class="fa-solid fa-volume-low"></i></button>
           <button type="button" class="control-btn btn-mute" aria-label="Mute"><i class="fa-solid fa-volume-high"></i></button>
           <span id="volume-display" class="volume-display">70%</span>
