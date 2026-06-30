@@ -1,5 +1,6 @@
 /**
- * Simple audio — plain HTML5 Audio, no Web Audio routing (most reliable for iTunes previews).
+ * AudioPlayer — HTML5 audio + lazy Web Audio analyser (for canvas visualizer).
+ * Graph connects on first play so iTunes previews aren't blocked by CORS at load.
  */
 class AudioPlayer {
   constructor() {
@@ -9,10 +10,27 @@ class AudioPlayer {
     this._rafId = null;
     this._lastProgressTime = -1;
     this._onTimeUpdate = null;
+    this._graphReady = false;
+    this.context = null;
+    this.analyser = null;
+  }
+
+  _ensureGraph() {
+    if (this._graphReady) return;
+    this.context = new (window.AudioContext || window.webkitAudioContext)();
+    this.analyser = this.context.createAnalyser();
+    this.analyser.fftSize = 64;
+    const source = this.context.createMediaElementSource(this.audio);
+    source.connect(this.analyser);
+    this.analyser.connect(this.context.destination);
+    this._graphReady = true;
   }
 
   getAudioData() {
-    return new Uint8Array(64);
+    if (!this.analyser) return new Uint8Array(32);
+    const data = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(data);
+    return data;
   }
 
   formatTime(seconds) {
@@ -22,19 +40,40 @@ class AudioPlayer {
     return `${mins}:${secs}`;
   }
 
-  async resumeContext() {}
+  async resumeContext() {
+    this._ensureGraph();
+    if (this.context?.state === 'suspended') await this.context.resume();
+  }
 
   loadSong(url) {
     return new Promise((resolve, reject) => {
       this.audio.pause();
+      this.audio.removeAttribute('src');
       this.audio.src = url;
       this.audio.load();
-      this.audio.onloadedmetadata = () => resolve();
-      this.audio.onerror = () => reject(new Error('Failed to load audio'));
+
+      const onReady = () => {
+        cleanup();
+        resolve();
+      };
+      const onFail = () => {
+        cleanup();
+        reject(new Error('Failed to load audio'));
+      };
+      const cleanup = () => {
+        this.audio.onloadedmetadata = null;
+        this.audio.oncanplay = null;
+        this.audio.onerror = null;
+      };
+
+      this.audio.onloadedmetadata = onReady;
+      this.audio.oncanplay = onReady;
+      this.audio.onerror = onFail;
     });
   }
 
   async play() {
+    await this.resumeContext();
     return this.audio.play();
   }
 

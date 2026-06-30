@@ -1,5 +1,5 @@
 /**
- * MidnightVinylPlayer — fast playback, album art, premium UI hooks.
+ * MidnightVinylPlayer — canvas visualizer, shuffled bg images, iTunes previews.
  */
 class MidnightVinylPlayer {
   constructor(config) {
@@ -12,11 +12,15 @@ class MidnightVinylPlayer {
     this.isMuted = false;
     this.savedVolume = 0.7;
     this.isScrubbing = false;
+    this.lastImageIndex = -1;
+    this.previewFailStreak = 0;
 
     this.audioPlayer = new AudioPlayer();
     this.audio = this.audioPlayer.audio;
 
     this._cacheElements();
+    this._setupCanvas();
+    this._setupVisualizer();
     this._bindControls();
     this._bindKeyboard();
     this._bindProgress();
@@ -42,36 +46,70 @@ class MidnightVinylPlayer {
       volUpBtn: document.querySelector('.btn-vol-up'),
       volDownBtn: document.querySelector('.btn-vol-down'),
       muteBtn: document.querySelector('.btn-mute'),
-      albumArt: document.getElementById('album-art'),
-      albumDisc: document.getElementById('album-disc'),
-      eqBars: document.getElementById('eq-bars'),
+      canvas: document.getElementById('song-canvas'),
       playerMain: document.getElementById('player-main'),
     };
+    this.ctx = this.el.canvas?.getContext('2d');
+  }
+
+  _setupCanvas() {
+    if (!this.el.canvas) return;
+    const resize = () => {
+      this.el.canvas.width = this.el.canvas.clientWidth;
+      this.el.canvas.height = this.el.canvas.clientHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+  }
+
+  _setupVisualizer() {
+    const images = this.config.visualizerImages || [];
+    this.bgImage = new Image();
+    this.bgImage.crossOrigin = 'anonymous';
+    this.bgReady = false;
+    this.bgImage.onload = () => { this.bgReady = true; };
+    this.bgImage.onerror = () => { this.bgReady = false; };
+
+    this.changeVisualizerImage = () => {
+      if (!images.length) return;
+      this.bgReady = false;
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * images.length);
+      } while (images.length > 1 && idx === this.lastImageIndex);
+      this.lastImageIndex = idx;
+      this.bgImage.src = images[idx];
+    };
+
+    const draw = () => {
+      requestAnimationFrame(draw);
+      if (!this.ctx || !this.el.canvas) return;
+      const { width, height } = this.el.canvas;
+      this.ctx.clearRect(0, 0, width, height);
+      if (this.bgReady) this.ctx.drawImage(this.bgImage, 0, 0, width, height);
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      this.ctx.fillRect(0, 0, width, height);
+      try {
+        const data = this.audioPlayer.getAudioData();
+        const barW = Math.max(2, (width / data.length) * 2.5);
+        let x = 0;
+        data.forEach((value) => {
+          const barH = value / 2;
+          const grad = this.ctx.createLinearGradient(0, height, 0, height - barH);
+          grad.addColorStop(0, 'rgba(255, 107, 207, 0.85)');
+          grad.addColorStop(1, 'rgba(45, 226, 230, 0.85)');
+          this.ctx.fillStyle = grad;
+          this.ctx.fillRect(x, height - barH, barW, barH);
+          x += barW + 1;
+        });
+      } catch (_) { /* analyser not ready yet */ }
+    };
+    draw();
+    if (images.length) this.changeVisualizerImage();
   }
 
   get activeList() {
     return this.isShuffle ? this.shuffledSongs : this.songs;
-  }
-
-  /** iTunes 100px art → 300px for crisp display */
-  _artUrl(song) {
-    const url = song.artworkUrl100 || song.artworkUrl60 || '';
-    return url.replace('100x100bb', '300x300bb').replace('60x60bb', '300x300bb');
-  }
-
-  _setAlbumArt(song) {
-    if (!this.el.albumArt) return;
-    const url = this._artUrl(song);
-    if (url) {
-      this.el.albumArt.src = url;
-      this.el.albumArt.alt = `${song.trackName} album art`;
-    }
-  }
-
-  _setPlayingVisual(on) {
-    this.el.albumDisc?.classList.toggle('is-spinning', on);
-    this.el.eqBars?.classList.toggle('is-active', on);
-    this.el.playerMain?.classList.toggle('is-playing', on);
   }
 
   _updateNowPlayingMeta() {
@@ -112,7 +150,7 @@ class MidnightVinylPlayer {
   _updatePlayPauseUI(playing) {
     if (this.el.playBtn) this.el.playBtn.hidden = playing;
     if (this.el.pauseBtn) this.el.pauseBtn.hidden = !playing;
-    this._setPlayingVisual(playing);
+    this.el.playerMain?.classList.toggle('is-playing', playing);
   }
 
   _updateTimeDisplay(current, duration) {
@@ -137,7 +175,7 @@ class MidnightVinylPlayer {
     this.shuffledSongs = copy;
   }
 
-  loadSong(index) {
+  async loadSong(index, skipFailAdvance = false) {
     const list = this.activeList;
     if (!list.length) return;
 
@@ -150,33 +188,37 @@ class MidnightVinylPlayer {
 
     if (this.el.title) this.el.title.textContent = song.trackName || 'Unknown';
     if (this.el.artist) this.el.artist.textContent = song.artistName || this.config.artistName;
-    this._setAlbumArt(song);
+    this.changeVisualizerImage?.();
     this._updateNowPlayingMeta();
 
-    this.audio.src = song.previewUrl;
-    this.audio.load();
-
-    this.audio.onloadedmetadata = () => {
-      const duration = Math.floor(this.audio.duration) || 30;
-      if (this.el.progressBar) {
-        this.el.progressBar.max = duration;
-        this.el.progressBar.value = 0;
+    try {
+      await this.audioPlayer.loadSong(song.previewUrl);
+      this.previewFailStreak = 0;
+    } catch (err) {
+      console.error('[Player] Load failed:', song.trackName, err);
+      this.previewFailStreak += 1;
+      if (!skipFailAdvance && this.previewFailStreak < 8) {
+        await this.loadSong((index + 1) % list.length, true);
+        return;
       }
-      this._updateTimeDisplay(0, duration);
-    };
-
-    this.audio.onerror = () => {
       if (this.el.title) this.el.title.textContent = 'Preview unavailable — try next track';
       this._updatePlayPauseUI(false);
-    };
+      return;
+    }
 
+    const duration = Math.floor(this.audio.duration) || 30;
+    if (this.el.progressBar) {
+      this.el.progressBar.max = duration;
+      this.el.progressBar.value = 0;
+    }
+    this._updateTimeDisplay(0, duration);
     this._updatePlayPauseUI(false);
     if (this.el.meta) this.el.meta.textContent = 'Press ▶ to play';
   }
 
   async init() {
     try {
-      const res = await fetch(`${this.config.songsUrl}?v=20250630`);
+      const res = await fetch(`${this.config.songsUrl}?v=20250630b`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const raw = Array.isArray(data) ? data : data.results || [];
@@ -184,7 +226,7 @@ class MidnightVinylPlayer {
 
       if (this.songs.length) {
         this._buildShuffledList();
-        this.loadSong(0);
+        await this.loadSong(0);
       } else if (this.el.title) {
         this.el.title.textContent = 'No songs found';
       }
@@ -204,7 +246,6 @@ class MidnightVinylPlayer {
     });
 
     this.audio.addEventListener('ended', () => this._onEnded());
-    document.addEventListener('click', () => this.audioPlayer.resumeContext(), { once: true });
     window.addEventListener('pagehide', () => this.destroy());
   }
 
@@ -215,18 +256,17 @@ class MidnightVinylPlayer {
     else this.skipForward();
   }
 
-  togglePlay() {
+  async togglePlay() {
     if (this.audio.paused) {
-      const start = () => {
-        this.audioPlayer.play()
-          .then(() => this._updatePlayPauseUI(true))
-          .catch(() => {
-            this._updatePlayPauseUI(false);
-            if (this.el.meta) this.el.meta.textContent = 'Could not play — try next track';
-          });
-      };
-      if (this.audio.readyState >= 2) start();
-      else this.audio.addEventListener('canplay', start, { once: true });
+      try {
+        await this.audioPlayer.play();
+        this._updatePlayPauseUI(true);
+        this._updateNowPlayingMeta();
+      } catch (err) {
+        console.warn('[Player] Play blocked:', err);
+        this._updatePlayPauseUI(false);
+        if (this.el.meta) this.el.meta.textContent = 'Tap ▶ to play (browser needs a click)';
+      }
     } else {
       this.audio.pause();
       this._updatePlayPauseUI(false);

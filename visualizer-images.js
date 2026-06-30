@@ -1,0 +1,31 @@
+/** Canvas background images — random pick on each song change */
+const VISUALIZER_IMAGES = [
+  'https://i.postimg.cc/4Kt066P7/IMG-7036.jpg',
+  'https://i.postimg.cc/RJCbxjBK/IMG-7037.jpg',
+  'https://i.postimg.cc/YjtPFmW0/IMG-7038.jpg',
+  'https://i.postimg.cc/34Fb63P3/IMG-7039.jpg',
+  'https://i.postimg.cc/Dm5MPyrg/IMG-7040.jpg',
+  'https://i.postimg.cc/rKmYnXgL/IMG-7041.jpg',
+  'https://i.postimg.cc/gnTt1SBL/IMG-7042.jpg',
+  'https://i.postimg.cc/FYkCvy2W/IMG-7043.jpg',
+  'https://i.postimg.cc/t10S41bX/IMG-7044.jpg',
+  'https://i.postimg.cc/ZB4w6102/IMG-7045.jpg',
+  'https://i.postimg.cc/BtZhb9r1/IMG-7046.jpg',
+  'https://i.postimg.cc/5YgngnC0/IMG-7047.jpg',
+  'https://i.postimg.cc/gL04T8VK/IMG-7048.jpg',
+  'https://i.postimg.cc/grMg6tpt/IMG-7049.jpg',
+  'https://i.postimg.cc/YhhbNNqr/IMG-7050.jpg',
+  'https://i.postimg.cc/Vdp4KSdj/IMG-7052.jpg',
+  'https://i.postimg.cc/v4nhkQVC/IMG-7053.jpg',
+  'https://i.postimg.cc/tZqzsWMH/IMG-7054.jpg',
+  'https://i.postimg.cc/zL1719wv/IMG-7055.jpg',
+  'https://i.postimg.cc/Tyq92CQ9/IMG-7057.jpg',
+  'https://i.postimg.cc/phsJzrw5/IMG-7058.jpg',
+  'https://i.postimg.cc/8jJmf1ts/IMG-7059.jpg',
+  'https://i.postimg.cc/Fk1gZmvW/IMG-7060.png',
+  'https://i.postimg.cc/QVMbsg7Q/IMG-7061.jpg',
+  'https://i.postimg.cc/ZW6PjwkS/IMG-7062.jpg',
+  'https://i.postimg.cc/svk9ptNm/IMG-7063.jpg',
+];
+
+window.VISUALIZER_IMAGES = VISUALIZER_IMAGES;

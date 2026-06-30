@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0" />
   <title>The Weeknd — Midnight Vinyl</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="player.css?v=20250630" />
+  <link rel="stylesheet" href="player.css?v=20250630b" />
   <style>
     #bg-video {
       position: fixed; inset: 0; width: 100%; height: 100%;
@@ -31,14 +31,7 @@
 
   <main id="player-main" class="player-wrapper" aria-label="The Weeknd music player">
     <div class="vinyl-panel">
-      <div class="album-stage">
-        <div id="album-disc" class="album-disc">
-          <img id="album-art" src="" alt="Album art" width="220" height="220" />
-        </div>
-        <div id="eq-bars" class="eq-bars" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
+      <canvas id="song-canvas" width="400" height="250" aria-label="Audio visualizer"></canvas>
 
       <div class="song-info">
         <h1 id="song-title" class="song-title">Loading…</h1>
@@ -74,9 +67,10 @@
     </div>
   </main>
 
-  <script src="video-background.js?v=20250630"></script>
-  <script src="audio-player.js?v=20250630"></script>
-  <script src="player-core.js?v=20250630"></script>
-  <script src="weeknd.js?v=20250630"></script>
+  <script src="video-background.js?v=20250630b"></script>
+  <script src="audio-player.js?v=20250630b"></script>
+  <script src="visualizer-images.js?v=20250630b"></script>
+  <script src="player-core.js?v=20250630b"></script>
+  <script src="weeknd.js?v=20250630b"></script>
 </body>
 </html>

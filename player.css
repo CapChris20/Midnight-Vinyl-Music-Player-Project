@@ -92,55 +92,21 @@ body::after {
   display: flex; flex-direction: column; align-items: center; gap: 24px;
 }
 
-/* Album disc */
-.album-stage { position: relative; width: 220px; height: 220px; }
-.album-disc {
-  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
-  border: 3px solid rgba(255,255,255,0.12);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 8px rgba(255,255,255,0.03);
-  transition: box-shadow var(--transition);
-}
-.album-disc.is-spinning {
-  animation: discSpin 8s linear infinite;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 8px var(--accent-glow);
-}
-@keyframes discSpin { to { transform: rotate(360deg); } }
-
-#album-art {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+/* Canvas visualizer */
+#song-canvas {
+  width: min(400px, 90vw);
+  height: auto;
+  aspect-ratio: 8 / 5;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 40px var(--accent-glow);
+  display: block;
+  background: #0a0a12;
 }
 
-.album-disc::after {
-  content: ''; position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #0a0a0a; border: 2px solid rgba(255,255,255,0.15);
-  box-shadow: 0 0 0 4px rgba(0,0,0,0.4);
-  pointer-events: none;
-}
-.album-stage { position: relative; }
-.album-disc { position: relative; }
-
-/* CSS equalizer — no canvas, no external images */
-.eq-bars {
-  display: flex; align-items: flex-end; justify-content: center;
-  gap: 4px; height: 28px; margin-top: 12px;
-}
-.eq-bars span {
-  display: block; width: 4px; height: 8px; border-radius: 2px;
-  background: var(--accent); opacity: 0.35;
-  transition: opacity var(--transition);
-}
-.eq-bars.is-active span { animation: eqPulse 0.8s ease-in-out infinite alternate; opacity: 1; }
-.eq-bars span:nth-child(1) { animation-delay: 0s; }
-.eq-bars span:nth-child(2) { animation-delay: 0.1s; }
-.eq-bars span:nth-child(3) { animation-delay: 0.2s; }
-.eq-bars span:nth-child(4) { animation-delay: 0.15s; }
-.eq-bars span:nth-child(5) { animation-delay: 0.05s; }
-.eq-bars span:nth-child(6) { animation-delay: 0.25s; }
-.eq-bars span:nth-child(7) { animation-delay: 0.12s; }
-@keyframes eqPulse {
-  0% { height: 6px; } 100% { height: 24px; }
+.player-main.is-playing #song-canvas,
+#player-main.is-playing #song-canvas {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 50px var(--accent-glow);
 }
 
 /* Song info */
