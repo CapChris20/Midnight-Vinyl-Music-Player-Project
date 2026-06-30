@@ -12,12 +12,20 @@
   --transition: 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html, body {
+html {
   width: 100%;
   min-height: 100%;
+  background: #030208;
+}
+
+html, body {
   font-family: 'DM Sans', sans-serif;
   color: var(--text);
-  background: #030208;
+}
+
+body {
+  min-height: 100%;
+  background: transparent;
 }
 
 /* Artist accent overrides */

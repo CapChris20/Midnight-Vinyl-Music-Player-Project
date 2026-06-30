@@ -176,7 +176,7 @@ class MidnightVinylPlayer {
 
   async init() {
     try {
-      const res = await fetch(this.config.songsUrl);
+      const res = await fetch(`${this.config.songsUrl}?v=20250630`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const raw = Array.isArray(data) ? data : data.results || [];
@@ -286,8 +286,8 @@ class MidnightVinylPlayer {
   }
 
   _bindControls() {
-    this.el.playBtn?.addEventListener('click', () => this.togglePlay());
-    this.el.pauseBtn?.addEventListener('click', () => this.togglePlay());
+    this.el.playBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.togglePlay(); });
+    this.el.pauseBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.togglePlay(); });
     this.el.forwardBtn?.addEventListener('click', () => { this._pulseButton(this.el.forwardBtn); this.skipForward(); });
     this.el.backwardBtn?.addEventListener('click', () => { this._pulseButton(this.el.backwardBtn); this.skipBack(); });
     this.el.repeatBtn?.addEventListener('click', () => this.cycleRepeat());

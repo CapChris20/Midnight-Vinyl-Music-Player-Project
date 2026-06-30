@@ -2,10 +2,15 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body {
+html {
+  min-height: 100%;
+  background: #030208;
+}
+
+body {
   min-height: 100%;
   font-family: 'DM Sans', sans-serif;
-  background: #030208;
+  background: transparent;
   color: #f4f0ff;
 }
 
