@@ -32,23 +32,24 @@ body[data-artist="michael-jackson"] { --accent: #eab308; --accent-glow: rgba(234
 }
 .skip-link:focus { top: 16px; }
 
-/* ── Background video (root folder mp4) ── */
+/* Stacking: video (0) → tint overlay (1) → content (2). Never use z-index: -1 — video hides behind body bg. */
 #bg-video {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: 0;
+  pointer-events: none;
 }
 
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(3,2,8,0.4) 0%, rgba(3,2,8,0.88) 100%);
+  background: linear-gradient(180deg, rgba(3,2,8,0.15) 0%, rgba(3,2,8,0.55) 100%);
 }
 
 .backtohome {
@@ -222,8 +223,6 @@ body::after {
 }
 
 @media (max-width: 768px) {
-  #bg-video { display: none; }
-  body { background: linear-gradient(135deg, #0f0a1a, #1a0a12, #0a1020); }
   .vinyl-panel { padding: 24px 20px; border-radius: 24px; }
   .album-stage { width: 180px; height: 180px; }
   .controls-primary .control-btn { width: 52px; height: 52px; }

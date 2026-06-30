@@ -5,12 +5,10 @@ function initVideoBackground() {
   const video = document.getElementById('bg-video');
   if (!video) return;
 
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  if (isMobile) return;
-
   video.muted = true;
   video.playsInline = true;
   video.loop = true;
+  video.setAttribute('playsinline', '');
 
   const tryPlay = () => {
     video.play().catch(() => {});
@@ -23,6 +21,7 @@ function initVideoBackground() {
   }
 
   document.addEventListener('click', tryPlay, { once: true });
+  document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
 }
 
 window.initVideoBackground = initVideoBackground;
