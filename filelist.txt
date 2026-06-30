@@ -17,7 +17,6 @@ mj.js
 mjbg.mov
 mjbg.mp4
 mjphoto.PNG
-music-home.JPG
 README.md
 style.css
 videos

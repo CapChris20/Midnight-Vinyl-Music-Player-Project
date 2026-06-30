@@ -63,6 +63,8 @@ body::after {
 
 /* ── Premium player panel ── */
 .player-wrapper {
+  position: relative;
+  z-index: 2;
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   padding: 72px 20px 40px;
 }

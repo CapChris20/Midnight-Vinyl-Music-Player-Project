@@ -170,12 +170,8 @@ class MidnightVinylPlayer {
       this._updatePlayPauseUI(false);
     };
 
-    this.audioPlayer.play()
-      .then(() => this._updatePlayPauseUI(true))
-      .catch(() => {
-        this._updatePlayPauseUI(false);
-        if (this.el.meta) this.el.meta.textContent = 'Tap ▶ to play (browser requires a click)';
-      });
+    this._updatePlayPauseUI(false);
+    if (this.el.meta) this.el.meta.textContent = 'Press ▶ to play';
   }
 
   async init() {
@@ -221,7 +217,16 @@ class MidnightVinylPlayer {
 
   togglePlay() {
     if (this.audio.paused) {
-      this.audioPlayer.play().then(() => this._updatePlayPauseUI(true)).catch(console.error);
+      const start = () => {
+        this.audioPlayer.play()
+          .then(() => this._updatePlayPauseUI(true))
+          .catch(() => {
+            this._updatePlayPauseUI(false);
+            if (this.el.meta) this.el.meta.textContent = 'Could not play — try next track';
+          });
+      };
+      if (this.audio.readyState >= 2) start();
+      else this.audio.addEventListener('canplay', start, { once: true });
     } else {
       this.audio.pause();
       this._updatePlayPauseUI(false);
